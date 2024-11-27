@@ -1,0 +1,56 @@
+services:
+  database:
+    restart: always
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - database_data:/var/lib/postgresql/data
+
+  php-fpm:
+    build:
+      context: ./.docker/php
+    environment:
+      APP_ENV: ${APP_ENV}
+      APP_SECRET: ${APP_SECRET}
+      DATABASE_URL: ${DATABASE_URL}
+      MESSENGER_TRANSPORT_DSN: ${MESSENGER_TRANSPORT_DSN}
+      APP_DEBUG: ${APP_DEBUG}
+    volumes:
+      - ${APP_FOLDER}:/var/www
+    ports:
+      - "9003:9003"
+
+  nginx:
+    environment:
+      HOSTNAME: ${HOSTNAME}
+    build:
+      context: ./.docker/nginx
+    volumes:
+      - ${APP_FOLDER}:/var/www
+      - ./logs:/var/log/nginx
+    depends_on:
+      - php-fpm
+    ports:
+      - "80:80"
+
+  elasticsearch:
+    image: elasticsearch:8.16.1
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      discovery.type: 'single-node'
+      xpack.security.enabled: 'true'
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+      ES_JAVA_OPTS: '-Xmx2g -Xms2g'
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+
+volumes:
+  database_data:
+  elasticsearch_data:
