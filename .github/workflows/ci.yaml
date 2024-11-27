@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request: ~
+  workflow_dispatch: ~
+
+jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones
+      -
+        name: Copy main .env
+        run: cp .env.example .env
+      -
+        name: Start services
+        uses: hoverkraft-tech/compose-action@v2.0.2
+        with:
+            compose-file: "./docker-compose.yaml"
+            up-flags: "-d"
+      -
+        name: Install dependencies
+        run: make composer-install
+      -
+        name: Create test database
+        run: make database-create
+      -
+        name: Run migrations
+        run: make migrate
+      -
+        name: Lint PHP
+        run: make lint
+      -
+        name: Run PHPUnit
+        run: make tests
+      -
+        name: Doctrine Schema Validator
+        run: docker compose exec -T php-fpm symfony console -e test doctrine:schema:validate
+
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones
+      -
+        name: Copy .env
+        run: cp .env.example .env
+      -
+        name: Start services
+        uses: hoverkraft-tech/compose-action@v2.0.2
+        with:
+            compose-file: "./docker-compose.yaml"
+      -
+        name: Install dependencies
+        run: make composer-install
+      -
+        name: Test coverage
+        run: make coverage
+      - 
+        name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
