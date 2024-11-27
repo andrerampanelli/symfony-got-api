@@ -1,0 +1,199 @@
+{
+   "$schema": "http://json-schema.org/draft-07/schema#",
+   "type": "object",
+   "properties": {
+      "characters": {
+         "type": "array",
+         "items": {
+            "type": "object",
+            "properties": {
+               "characterName": {
+                  "type": "string"
+               },
+               "characterLink": {
+                  "type": "string"
+               },
+               "actorName": {
+                  "type": "string"
+               },
+               "actorLink": {
+                  "type": "string"
+               },
+               "houseName": {
+                  "type": [
+                     "string",
+                     "array",
+                     "null"
+                  ],
+                  "items": {
+                     "type": "string"
+                  }
+               },
+               "royal": {
+                  "type": [
+                     "boolean",
+                     "null"
+                  ]
+               },
+               "parents": {
+                  "type": [
+                     "array",
+                     "null"
+                  ],
+                  "items": {
+                     "type": "string"
+                  }
+               },
+               "siblings": {
+                  "type": [
+                     "array",
+                     "null"
+                  ],
+                  "items": {
+                     "type": "string"
+                  }
+               },
+               "killedBy": {
+                  "type": [
+                     "array",
+                     "null"
+                  ],
+                  "items": {
+                     "type": "string"
+                  }
+               },
+               "characterImageThumb": {
+                  "type": [
+                     "string",
+                     "null"
+                  ]
+               },
+               "characterImageFull": {
+                  "type": [
+                     "string",
+                     "null"
+                  ]
+               },
+               "nickname": {
+                  "type": [
+                     "string",
+                     "null"
+                  ]
+               },
+               "killed": {
+                  "type": [
+                     "array",
+                     "null"
+                  ],
+                  "items": {
+                     "type": "string"
+                  }
+               },
+               "servedBy": {
+                  "type": [
+                     "array",
+                     "null"
+                  ],
+                  "items": {
+                     "type": "string"
+                  }
+               },
+               "parentOf": {
+                  "type": [
+                     "array",
+                     "null"
+                  ],
+                  "items": {
+                     "type": "string"
+                  }
+               },
+               "marriedEngaged": {
+                  "type": [
+                     "array",
+                     "null"
+                  ],
+                  "items": {
+                     "type": "string"
+                  }
+               },
+               "serves": {
+                  "type": [
+                     "array",
+                     "null"
+                  ],
+                  "items": {
+                     "type": "string"
+                  }
+               },
+               "guardedBy": {
+                  "type": [
+                     "array",
+                     "null"
+                  ],
+                  "items": {
+                     "type": "string"
+                  }
+               },
+               "actors": {
+                  "type": [
+                     "array",
+                     "null"
+                  ],
+                  "items": {
+                     "type": "object",
+                     "properties": {
+                        "actorName": {
+                           "type": "string"
+                        },
+                        "actorLink": {
+                           "type": "string"
+                        },
+                        "seasonsActive": {
+                           "type": "array",
+                           "items": {
+                              "type": "integer"
+                           }
+                        }
+                     },
+                     "required": [
+                        "actorName",
+                        "actorLink",
+                        "seasonsActive"
+                     ]
+                  }
+               },
+               "allies": {
+                  "type": [
+                     "array",
+                     "null"
+                  ],
+                  "items": {
+                     "type": "string"
+                  }
+               },
+               "guardianOf": {
+                  "type": [
+                     "array",
+                     "null"
+                  ],
+                  "items": {
+                     "type": "string"
+                  }
+               },
+               "kingsguard": {
+                  "type": [
+                     "boolean",
+                     "null"
+                  ]
+               }
+            },
+            "required": [
+               "characterName"
+            ]
+         }
+      }
+   },
+   "required": [
+      "characters"
+   ]
+}
